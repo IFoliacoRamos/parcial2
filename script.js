@@ -12,7 +12,9 @@
  * Uso de Comentarios Técnicos: Cada sección crítica (el cálculo del parámetro de decisión p) 
  * deberá estar documentada explicando la lógica matemática detrás del ajuste del error.
  */
-
+// Obtener canvas y contexto
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 // Función de apoyo para dibujar un píxel individual
 function drawPixel(ctx, x, y, color = "#000000") {
     ctx.fillStyle = color;
@@ -23,10 +25,38 @@ function drawPixel(ctx, x, y, color = "#000000") {
  * Implementación del algoritmo de Bresenham para líneas.
  * @param {number} x0, y0 - Coordenadas iniciales
  * @param {number} x1, y1 - Coordenadas finales
+ * @param {string} color - Color de la línea
  * @returns {void}
  */
 function bresenhamLine(x0, y0, x1, y1, color) {
-    // Desarrollo del estudiante
+    let dx = Math.abs(x1 - x0);
+    let dy = Math.abs(y1 - y0);
+
+    //Dirección de avance en cada eje (+1 o -1)
+    let sx = (x0 < x1) ? 1 : -1;
+    let sy = (y0 < y1) ? 1 : -1;
+
+    // Error acumulado 
+    let err = dx - dy;
+
+    while (true){
+        drawPixel(ctx, x0, y0, color);
+        // Si se alcanzó el punto final, terminar
+        if (x0 === x1 && y0 === y1) break;
+
+        let e2 = 2 * err;
+        // Ajuste horizontal
+        if (e2 > -dy) {
+            err -= dy;
+            x0 += sx;
+        }
+        // Ajuste vertical
+        if (e2 < dx) {
+            err += dx;
+            y0 += sy;
+        }
+
+    }
 }
 
 /**
@@ -38,4 +68,5 @@ function bresenhamLine(x0, y0, x1, y1, color) {
  */
 function getPolygonVertices(centerX, centerY, sides, radius) {
     // Desarrollo del estudiante (Uso de Math.sin/Math.cos y retorno de datos)
+
 }
