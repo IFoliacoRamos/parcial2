@@ -58,6 +58,40 @@ function bresenhamLine(x0, y0, x1, y1, color) {
 
     }
 }
+// bresenham para circunferencias
+function bresenhamCircle(cx, cy, r, color = "#e01313"){
+
+    let x = 0;
+    let y = r;
+    
+    // Parametro de desicion inicial 
+    let p = 3 - 2 * r; 
+    while (x <= y) {
+        plotCirclePoints(cx, cy, x, y, color);
+
+        if (p < 0) {
+            p = p + 4 * x + 6;
+        } else {
+            p = p + 4 * (x - y) + 10;
+            y--;
+        }
+
+        x++;
+     }
+   }
+
+   // dibuja los 8 octantes de la circunferencia 
+   function plotCirclePoints(cx, cy, x, y, color) {
+    drawPixel(ctx, cx + x, cy + y, color);
+    drawPixel(ctx, cx - x, cy + y, color);
+    drawPixel(ctx, cx + x, cy - y, color);
+    drawPixel(ctx, cx - x, cy - y, color);
+
+    drawPixel(ctx, cx + y, cy + x, color);
+    drawPixel(ctx, cx - y, cy + x, color);
+    drawPixel(ctx, cx + y, cy - x, color);
+    drawPixel(ctx, cx - y, cy - x, color);
+}
 
 /**
  * Calcula los vértices de un polígono regular.
@@ -68,5 +102,20 @@ function bresenhamLine(x0, y0, x1, y1, color) {
  */
 function getPolygonVertices(centerX, centerY, sides, radius) {
     // Desarrollo del estudiante (Uso de Math.sin/Math.cos y retorno de datos)
+    let vertices = [];
 
+    for (let i = 0; i < sides; i++) {
+        //divide la circunferencia completa en partes iguales
+        let angle = (2 * Math.PI * i) / sides - Math.PI / 2;
+
+        let x = centerX + radius * Math.cos(angle);
+        let y = centerY + radius * Math.sin(angle);
+
+        vertices.push({
+            x: Math.round(x),
+            y: Math.round(y)
+        });
+    }
+
+    return vertices;
 }
